@@ -1,34 +1,30 @@
 pipeline {
     agent any
 
+    environment {
+        SONAR_LOGIN = credentials('sqa_512309db8bbe8cf1c432b8c5e7dfdc16d78414ae')
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                // Checkout your source code from version control here
+                checkout scm
             }
         }
-        
-        stage('Build') {
-            steps {
-                // Build your project here
-            }
-        }
-        
-        stage('Run Tests') {
-            steps {
-                // Run your tests here
-            }
-        }
-        
+
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    def scannerHome = tool name: 'SonarQubeScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                    withSonarQubeEnv('SonarQube') {
-                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.login=YOUR_GENERATED_TOKEN"
+                    def scannerHome = tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                    withSonarQubeEnv('http://localhost:9000/') {
+                        sh "${scannerHome}/bin/sonar-scanner"
                     }
                 }
             }
         }
+
+        
     }
+
+  
 }
