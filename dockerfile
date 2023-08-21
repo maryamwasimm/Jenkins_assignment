@@ -1,15 +1,17 @@
-# Use an official Python runtime as the base image
+# Use the official Python image as the base image
 FROM python:3.9
 
-# Set the working directory in the container
-WORKDIR /var/jenkins_home/workspace/Assignment1-final@2
+# Set the working directory inside the container
+WORKDIR /app
 
+# Copy the requirements file into the container
+COPY requirements.txt .
 
-# Install any needed packages specified in requirements.txt
+# Install any dependencies specified in the requirements file
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
+# Copy the rest of the application code into the container
+COPY . .
 
-# Run app.py when the container launches
+# Command to run when the container starts
 CMD ["python", "calc.py"]
